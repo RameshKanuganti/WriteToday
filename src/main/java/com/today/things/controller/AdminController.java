@@ -30,13 +30,14 @@ public class AdminController {
     @Autowired
     ActivityRepository activityRepository;
 
-    /*@RequestMapping("/")
-    private ResponseEntity<TodayResponse> getAdminDashBoard() {
+    @RequestMapping("/")
+    private String getAdminDashBoard() {
         TodayResponse todayResponse = adminServiceI.getAdminDashBoard();
-        return new ResponseEntity<TodayResponse>(todayResponse, todayResponse.getStatus());
-    }*/
+        //return new ResponseEntity<TodayResponse>(todayResponse, todayResponse.getStatus());
+        return "sign_up";
+    }
 
-    @RequestMapping(value = {"/role", "/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/role"}, method = RequestMethod.GET)
     public String addRoles(Model model) {
         List<Role> roles = roleRepository.findAll();
         model.addAttribute("rolesList", roles);

@@ -1,32 +1,25 @@
-package com.today.things.model;
+package com.today.things.dto;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
+import com.today.things.model.BaseEntity;
+import com.today.things.model.Role;
+
 import java.util.List;
 
-@Entity
-public class User extends BaseEntity {
+public class UserDTO extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Email
-    @Column(name = "email_id", nullable = false, unique = true)
     private String emailId;
 
-    @Column(name = "location")
     private String location;
 
-    @OneToMany
     private List<Role> roles;
+
+    private String password;
 
     public Long getId() {
         return id;
@@ -74,5 +67,13 @@ public class User extends BaseEntity {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
