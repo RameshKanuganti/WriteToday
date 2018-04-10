@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+</head>
+<body>
+
+<div class="container">
+    <h2 align="center">Add Activity</h2>
+    <form action="/activity" method="post">
+        <div class="form-group">
+            <label>Activity Name:</label> <input type="text" class="form-control" placeholder="Enter Activity"
+                                                 name="activityName"/>
+        </div>
+        <div th:if="${!activityList.isEmpty()}">
+            <div th:each="activityDTO,itr:${activityList}">
+                <div><label th:text="${activityDTO.getActivityName()}"></label>
+                    <input type="text" class="form-control col-md-4" placeholder="Enter Activity"/>
+                    <div th:if="${activityDTO.getActivityName()} == 'Reading'">
+                        <div class="form-group">
+                            <select>
+                                <option value="volvo">Volvo</option>
+                                <option value="saab">Saab</option>
+                                <option value="opel">Opel</option>
+                                <option value="audi">Audi</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div align="center">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

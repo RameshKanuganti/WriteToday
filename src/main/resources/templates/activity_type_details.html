@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -10,33 +10,46 @@
 <body>
 
 <div class="container">
-    <h2 align="center">Add Roles</h2>
-    <form action="/role" method="post">
+    <h2 align="center">Add ActivityType Details</h2>
+    <form action="/activity_type_details" method="post">
         <div class="form-group">
-            <label>Role Name:</label> <input type="text" class="form-control" placeholder="Enter Role"
-                                             name="role"/>
+            <label>ActivityType Name:</label> <input type="text" class="form-control"
+                                                     placeholder="ActivityType Name" name="name"/>
         </div>
+
+        <div class="form-group">
+            <label>Activity Type:</label>
+            <select class="form-control" name="activityTypeId">
+                <option value="">Select Activity Type</option>
+                <option th:each="activityTypeDto : ${activityTypeList}"
+                        th:text="${activityTypeDto.getName()}"
+                        th:value="${activityTypeDto.getId()}"></option>
+            </select>
+        </div>
+
+        <br/> <br/>
         <div align="center">
             <button type="submit" class="btn btn-default">Submit</button>
         </div>
     </form>
     <div class="row">
         <div class="col-md-12">
-
-            <div th:if="${!rolesList.isEmpty()}">
+            <div th:if="${!activityTypeDetailsList.isEmpty()}">
                 <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>S.No</th>
-                        <th>Role</th>
+                        <th>ActivityType Detail</th>
+                        <th>Activity Type</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="roleDTO,itr:${rolesList}">
-                        <td th:text="${itr.index+1}"></td>
-                        <td th:text="${roleDTO.getRole()}"></td>
+                    <tr th:each="activityTypeDetailsDto,iter: ${activityTypeDetailsList}">
+                        <td th:text="${iter.index+1}"></td>
+                        <td th:text="${activityTypeDetailsDto.getName()}"></td>
+                        <td th:text="${activityTypeDetailsDto.getActivityType()}"></td>
                         <td><i class="material-icons" style="color: #1E88E5">mode_edit</i></td>
                         <td><i class="material-icons" style="color: #FF6E40">mode_delete</i></td>
                     </tr>

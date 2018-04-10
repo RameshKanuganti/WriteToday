@@ -1,10 +1,20 @@
-package com.today.things.dto;
+package com.today.things.model;
 
-public class ActivityDTO {
+import javax.persistence.*;
 
+@Entity
+public class UserActivity extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "activity_name")
     private String activityName;
+
+    @OneToOne
+    private ActivityType activityType;
 
     public Long getId() {
         return id;

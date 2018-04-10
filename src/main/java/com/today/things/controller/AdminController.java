@@ -1,11 +1,16 @@
 package com.today.things.controller;
 
-import com.today.things.dto.ActivityDTO;
+import com.today.things.dto.ActivityTypeDTO;
+import com.today.things.dto.ActivityTypeDetailsDTO;
 import com.today.things.dto.RoleDTO;
-import com.today.things.model.Activity;
+import com.today.things.dto.UserActivityDTO;
+import com.today.things.model.ActivityType;
 import com.today.things.model.Role;
-import com.today.things.repo.ActivityRepository;
+import com.today.things.model.UserActivity;
+import com.today.things.repo.ActivityTypeDetailRepository;
+import com.today.things.repo.ActivityTypeRepository;
 import com.today.things.repo.RoleRepository;
+import com.today.things.repo.UserActivityRepository;
 import com.today.things.serviceI.AdminServiceI;
 import com.today.things.util.TodayResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +32,13 @@ public class AdminController {
     RoleRepository roleRepository;
 
     @Autowired
-    ActivityRepository activityRepository;
+    UserActivityRepository userActivityRepository;
+
+    @Autowired
+    ActivityTypeRepository activityTypeRepository;
+
+    @Autowired
+    ActivityTypeDetailRepository activityTypeDetailRepository;
 
     @RequestMapping("/")
     private String getAdminDashBoard() {
@@ -56,21 +67,54 @@ public class AdminController {
 
     @RequestMapping(value = "/activity", method = RequestMethod.GET)
     public String viewActivities(Model model) {
-        List<Activity> activities = activityRepository.findAll();
+        List<UserActivity> activities = userActivityRepository.findAll();
         model.addAttribute("activityList", activities);
 
         return "activity";
     }
 
     @RequestMapping(value = "/activity", method = RequestMethod.POST)
-    public String addActivity(@ModelAttribute ActivityDTO activityDTO, Model model) {
+    public String addActivity(@ModelAttribute UserActivityDTO activityDTO, Model model) {
         TodayResponse todayResponse = adminServiceI.saveActivity(activityDTO);
 
-        List<Activity> activities = activityRepository.findAll();
+        List<UserActivity> activities = userActivityRepository.findAll();
         model.addAttribute("activityList", activities);
 
         return "activity";
     }
 
+    @RequestMapping(value = "activity_type", method = RequestMethod.GET)
+    private String showActivityType(Model model) {
+
+        List<ActivityType> activities = activityTypeRepository.findAll();
+        model.addAttribute("activityTypeList", activities);
+        return "activity_type";
+    }
+
+    @RequestMapping(value = "activity_type", method = RequestMethod.POST)
+    private String saveActivityType(@ModelAttribute ActivityTypeDTO activityTypeDTO, Model model) {
+        TodayResponse todayResponse = adminServiceI.saveActivityType(activityTypeDTO);
+
+        List<ActivityType> activities = activityTypeRepository.findAll();
+        model.addAttribute("activityTypeList", activities);
+        return "activity_type";
+    }
+
+    @RequestMapping(value = "activity_type_details", method = RequestMethod.GET)
+    private String showActivityTypeDetails(Model model) {
+
+        model.addAttribute("activityTypeList", adminServiceI.findAllActivityTypes());
+        model.addAttribute("activityTypeDetailsList", adminServiceI.findAllActivityTypeDetails());
+        return "activity_type_details";
+    }
+
+    @RequestMapping(value = "activity_type_details", method = RequestMethod.POST)
+    private String saveActivityTypeDetails(@ModelAttribute ActivityTypeDetailsDTO activityTypeDetailsDTO, Model model) {
+        TodayResponse todayResponse = adminServiceI.saveActivityTypeDetails(activityTypeDetailsDTO);
+
+        model.addAttribute("activityTypeList", adminServiceI.findAllActivityTypes());
+        model.addAttribute("activityTypeDetailsList", adminServiceI.findAllActivityTypeDetails());
+        return "activity_type_details";
+    }
 
 }
