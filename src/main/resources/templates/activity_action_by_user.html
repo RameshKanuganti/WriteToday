@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+</head>
+<body>
+
+<div class="container">
+    <h2 align="center">Add Activity Type</h2>
+    <form action="/activity_type" method="post">
+        <br> <br>
+        <div th:if="${!activityQuestionDTOList.isEmpty()}">
+            <div th:each="activityQuestionDTO,itr:${activityQuestionDTOList}">
+
+                <div><label th:text="${activityQuestionDTO.getActivityName()}"></label>
+                    <input type="text" class="form-control col-md-4" placeholder="Enter Comments"/>
+
+                    <div th:if="${activityQuestionDTO.getActivityTypeId()} != '0'">
+                        <div class="form-group"
+                             th:if="${!activityQuestionDTO.getActivityTypeDetailsDTOList().isEmpty()}">
+                            <br> <br>
+                            <label>Activity Type:</label>
+                            <select id="select" class="form-control" name="activityTypeId">
+                                <option value="">Select Activity Type</option>
+                                <option th:each="activityTypeDTO : ${activityQuestionDTO.getActivityTypeDetailsDTOList()}"
+                                        th:text="${activityTypeDTO.getName()}"
+                                        th:value="${activityTypeDTO.getId()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <br><br>
+
+                </div>
+            </div>
+            <br>
+        </div>
+
+        <div align="center">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

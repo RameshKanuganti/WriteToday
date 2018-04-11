@@ -3,7 +3,7 @@ package com.today.things.model;
 import javax.persistence.*;
 
 @Entity
-public class UserActivity extends BaseEntity {
+public class ActivityQuestion extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,5 +30,13 @@ public class UserActivity extends BaseEntity {
 
     public void setActivityName(String activityName) {
         this.activityName = activityName;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 }

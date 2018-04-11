@@ -1,8 +1,9 @@
 package com.today.things.controller;
 
 import com.today.things.dto.UserDTO;
-import com.today.things.model.UserActivity;
-import com.today.things.repo.UserActivityRepository;
+import com.today.things.model.ActivityQuestion;
+import com.today.things.repo.ActivityQuestionRepository;
+import com.today.things.serviceI.AdminServiceI;
 import com.today.things.serviceI.UserServiceI;
 import com.today.things.util.TodayResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,14 @@ public class UserController {
     UserServiceI userServiceI;
 
     @Autowired
-    UserActivityRepository activityRepository;
+    AdminServiceI adminServiceI;
+
+    @Autowired
+    ActivityQuestionRepository activityRepository;
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerUser(@ModelAttribute UserDTO userDTO) {
-
         return "sign_up";
-
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -38,21 +40,22 @@ public class UserController {
 
     }
 
-
-    @RequestMapping(value = "user_activity", method = RequestMethod.GET)
+    @RequestMapping(value = "user_activity_action", method = RequestMethod.GET)
     public String userActivityGet(Model model, @ModelAttribute UserDTO userDTO) {
 
-        List<UserActivity> activities = activityRepository.findAll();
-        model.addAttribute("activityList", activities);
-        return "user_activity";
+        model.addAttribute("activityQuestionDTOList", adminServiceI.findAllActivityQuestions());
+        model.addAttribute("activityTypeList", adminServiceI.findAllActivityTypes());
+        model.addAttribute("activityTypeDetailsList", adminServiceI.findAllActivityTypeDetails());
+
+        return "activity_action_by_user";
     }
 
-    @RequestMapping(value = "user_activity", method = RequestMethod.POST)
+    @RequestMapping(value = "user_activity_action", method = RequestMethod.POST)
     public String userActivity(Model model, @ModelAttribute UserDTO userDTO) {
 
-        List<UserActivity> activities = activityRepository.findAll();
+        List<ActivityQuestion> activities = activityRepository.findAll();
         model.addAttribute("activityList", activities);
-        return "user_activity";
+        return "activity_action_by_user";
     }
 
 

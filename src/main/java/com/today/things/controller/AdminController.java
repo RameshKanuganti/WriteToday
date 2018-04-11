@@ -1,16 +1,15 @@
 package com.today.things.controller;
 
+import com.today.things.dto.ActivityQuestionDTO;
 import com.today.things.dto.ActivityTypeDTO;
 import com.today.things.dto.ActivityTypeDetailsDTO;
 import com.today.things.dto.RoleDTO;
-import com.today.things.dto.UserActivityDTO;
 import com.today.things.model.ActivityType;
 import com.today.things.model.Role;
-import com.today.things.model.UserActivity;
+import com.today.things.repo.ActivityQuestionRepository;
 import com.today.things.repo.ActivityTypeDetailRepository;
 import com.today.things.repo.ActivityTypeRepository;
 import com.today.things.repo.RoleRepository;
-import com.today.things.repo.UserActivityRepository;
 import com.today.things.serviceI.AdminServiceI;
 import com.today.things.util.TodayResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class AdminController {
     RoleRepository roleRepository;
 
     @Autowired
-    UserActivityRepository userActivityRepository;
+    ActivityQuestionRepository userActivityRepository;
 
     @Autowired
     ActivityTypeRepository activityTypeRepository;
@@ -63,24 +62,6 @@ public class AdminController {
         model.addAttribute("rolesList", roles);
 
         return "add_role";
-    }
-
-    @RequestMapping(value = "/activity", method = RequestMethod.GET)
-    public String viewActivities(Model model) {
-        List<UserActivity> activities = userActivityRepository.findAll();
-        model.addAttribute("activityList", activities);
-
-        return "activity";
-    }
-
-    @RequestMapping(value = "/activity", method = RequestMethod.POST)
-    public String addActivity(@ModelAttribute UserActivityDTO activityDTO, Model model) {
-        TodayResponse todayResponse = adminServiceI.saveActivity(activityDTO);
-
-        List<UserActivity> activities = userActivityRepository.findAll();
-        model.addAttribute("activityList", activities);
-
-        return "activity";
     }
 
     @RequestMapping(value = "activity_type", method = RequestMethod.GET)
@@ -115,6 +96,31 @@ public class AdminController {
         model.addAttribute("activityTypeList", adminServiceI.findAllActivityTypes());
         model.addAttribute("activityTypeDetailsList", adminServiceI.findAllActivityTypeDetails());
         return "activity_type_details";
+    }
+
+    @RequestMapping(value = "/activity_question", method = RequestMethod.GET)
+    public String viewActivities(Model model) {
+
+        List<ActivityQuestionDTO> activityQuestionDTOList = adminServiceI.findAllActivityQuestions();
+        model.addAttribute("activityQuestionDTOList", activityQuestionDTOList);
+
+        List<ActivityTypeDTO> activityTypeList = adminServiceI.findAllActivityTypes();
+        model.addAttribute("activityTypeList", activityTypeList);
+
+        return "activity_question";
+    }
+
+    @RequestMapping(value = "/activity_question", method = RequestMethod.POST)
+    public String addActivity(@ModelAttribute ActivityQuestionDTO activityDTO, Model model) {
+        TodayResponse todayResponse = adminServiceI.saveActivity(activityDTO);
+
+        List<ActivityQuestionDTO> activityQuestionDTOList = adminServiceI.findAllActivityQuestions();
+        model.addAttribute("activityQuestionDTOList", activityQuestionDTOList);
+
+        List<ActivityTypeDTO> activityTypeList = adminServiceI.findAllActivityTypes();
+        model.addAttribute("activityTypeList", activityTypeList);
+
+        return "activity_question";
     }
 
 }

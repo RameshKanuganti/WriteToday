@@ -14,12 +14,22 @@
 <body>
 
 <div class="container">
-    <h2 align="center">Add Activity</h2>
-    <form action="/activity" method="post">
+    <h2 align="center">Add Activity Question</h2>
+    <form action="/activity_question" method="post">
         <div class="form-group">
-            <label>Activity Name:</label> <input type="text" class="form-control" placeholder="Enter Activity"
+            <label>Activity Question:</label> <input type="text" class="form-control" placeholder="Enter Activity Question"
                                                  name="activityName"/>
         </div>
+        <div class="form-group" th:if="${!activityTypeList.isEmpty()}">
+            <label>Activity Type:</label>
+            <select id="select" class="form-control" name="activityTypeId">
+                <option value="">Select Activity Type</option>
+                <option th:each="activityType : ${activityTypeList}"
+                        th:text="${activityType.getName()}"
+                        th:value="${activityType.getId()}"></option>
+            </select>
+        </div>
+
         <div align="center">
             <button type="submit" class="btn btn-default">Submit</button>
         </div>
@@ -27,20 +37,22 @@
     <div class="row">
         <div class="col-md-12">
 
-            <div th:if="${!activityList.isEmpty()}">
+            <div th:if="${!activityQuestionDTOList.isEmpty()}">
                 <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>S.No</th>
                         <th>Activity</th>
+                        <th>Activity Type</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="activityDTO,itr:${activityList}">
+                    <tr th:each="activityQuestionDto,itr:${activityQuestionDTOList}">
                         <td th:text="${itr.index+1}"></td>
-                        <td th:text="${activityDTO.getActivityName()}"></td>
+                        <td th:text="${activityQuestionDto.getActivityName()}"></td>
+                        <td th:text="${activityQuestionDto.getActivityTypeName()}"></td>
                         <td><i class="material-icons" style="color: #1E88E5">mode_edit</i></td>
                         <td><i class="material-icons" style="color: #FF6E40">mode_delete</i></td>
                     </tr>
@@ -52,3 +64,4 @@
 </div>
 </body>
 </html>
+
