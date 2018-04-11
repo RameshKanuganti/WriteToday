@@ -15,7 +15,7 @@
         <br> <br>
         <div th:if="${!activityQuestionDTOList.isEmpty()}">
             <div th:each="activityQuestionDTO,itr:${activityQuestionDTOList}">
-
+                <br>
                 <div><label th:text="${activityQuestionDTO.getActivityName()}"></label>
                     <input type="text" class="form-control col-md-4" placeholder="Enter Comments"/>
 
@@ -33,7 +33,6 @@
                         </div>
                     </div>
                     <br><br>
-
                 </div>
             </div>
             <br>
