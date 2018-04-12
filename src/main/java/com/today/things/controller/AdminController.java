@@ -15,6 +15,7 @@ import com.today.things.util.TodayResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,7 +40,7 @@ public class AdminController {
     @Autowired
     ActivityTypeDetailRepository activityTypeDetailRepository;
 
-    @RequestMapping("/")
+    @GetMapping("/")
     private String getAdminDashBoard() {
         TodayResponse todayResponse = adminServiceI.getAdminDashBoard();
         //return new ResponseEntity<TodayResponse>(todayResponse, todayResponse.getStatus());
