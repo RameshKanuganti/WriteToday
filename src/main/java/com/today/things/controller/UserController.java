@@ -1,7 +1,7 @@
 package com.today.things.controller;
 
+import com.today.things.dto.ActivityActionLogDTO;
 import com.today.things.dto.UserDTO;
-import com.today.things.model.ActivityQuestion;
 import com.today.things.repo.ActivityQuestionRepository;
 import com.today.things.serviceI.AdminServiceI;
 import com.today.things.serviceI.UserServiceI;
@@ -12,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -47,15 +45,18 @@ public class UserController {
         model.addAttribute("activityTypeList", adminServiceI.findAllActivityTypes());
         model.addAttribute("activityTypeDetailsList", adminServiceI.findAllActivityTypeDetails());
 
-        return "activity_action_by_user";
+        return "activity_action_log_by_user";
     }
 
     @RequestMapping(value = "user_activity_action", method = RequestMethod.POST)
-    public String userActivity(Model model, @ModelAttribute UserDTO userDTO) {
+    public String userActivity(Model model, @ModelAttribute ActivityActionLogDTO activityActionLogDTO) {
 
-        List<ActivityQuestion> activities = activityRepository.findAll();
-        model.addAttribute("activityList", activities);
-        return "activity_action_by_user";
+        TodayResponse todayResponse = userServiceI.saveActivityLog(activityActionLogDTO);
+
+        model.addAttribute("activityQuestionDTOList", adminServiceI.findAllActivityQuestions());
+        model.addAttribute("activityTypeList", adminServiceI.findAllActivityTypes());
+        model.addAttribute("activityTypeDetailsList", adminServiceI.findAllActivityTypeDetails());
+        return "activity_action_log_by_user";
     }
 
 
