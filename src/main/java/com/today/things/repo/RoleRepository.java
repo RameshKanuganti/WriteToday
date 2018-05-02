@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    Role findByRole(Long roleId);
+    Role findTop1ByRole(String role);
+
 }

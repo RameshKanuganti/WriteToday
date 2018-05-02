@@ -7,29 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/js/postrequest.js"></script>
-    <script src="/js/getrequest.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 </head>
 <body>
 
-<div class="container">
+<div class="container"  ng-app="myApp" ng-controller="myCtrl">
     <h2 align="center">Add Activity Type</h2>
-    <form action="/activity_type" id="actionActionForm">
+    <form id="actionActionForm">
         <br> <br>
+
         <div th:if="${!activityQuestionDTOList.isEmpty()}">
             <div th:each="activityQuestionDTO,itr:${activityQuestionDTOList}">
 
+
                 <div><label th:text="${activityQuestionDTO.getActivityName()}"
-                            th:value="${activityQuestionDTO.getId()}" id="activityType[${itr}]"
-                            name="activityTypeId"></label>
-                    <input type="text" class="form-control col-md-4" placeholder="Enter Comments" name="userAction"/>
+                            th:value="${activityQuestionDTO.getId()}" id="activityType"
+                            name="activityTypeId" class="json"></label>
+                    <input type="text" class="json form-control col-md-4" placeholder="Enter Comments"
+                           name="userAction"  ng-model="activity.userAction" />
+
 
                     <div th:if="${activityQuestionDTO.getActivityTypeId()} != '0'">
                         <div class="form-group"
                              th:if="${!activityQuestionDTO.getActivityTypeDetailsDTOList().isEmpty()}">
                             <br> <br>
                             <label>Activity Type:</label>
-                            <select id="select" class="form-control" name="activityTypeDetailId">
+                            <select id="select" class="json form-control" name="activityTypeDetailId" ng-model="activity.activityTypeDetailId">
                                 <option value="">Select Activity Type</option>
                                 <option th:each="activityTypeDTO : ${activityQuestionDTO.getActivityTypeDetailsDTOList()}"
                                         th:text="${activityTypeDTO.getName()}"
@@ -37,14 +40,19 @@
                             </select>
                         </div>
                     </div>
+
+
                     <br><br>
+
                 </div>
+
+
             </div>
             <br>
         </div>
 
         <div align="center">
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button id="submitBtn" type="submit" class="btn btn-default" ng-submit="saveData()" > Submit</button>
         </div>
     </form>
 </div>
@@ -53,60 +61,60 @@
 
 <script>
 
-    $(document).ready(function () {
 
-        // SUBMIT FORM
-        $("#actionActionForm").submit(function (event) {
-            // Prevent the form from submitting via the browser.
-            event.preventDefault();
-            ajaxPost();
+ /*   $(document).ready(function () {
+        $('#submitBtn').click(function () {
+            createJSON();
+        });
+    });
+
+
+    function createJSON() {
+        jsonObj = [];
+        console.log("--------------------------->" + jsonObj);
+        $("input[class=json]").each(function () {
+
+            console.log("------------------1111--------->" + jsonObj);
+
+            var userAction = $(this).attr("userAction");
+            var activityTypeId = $(this).attr("activityTypeId").val();
+            var activityTypeDetailId = $(this).attr("activityTypeDetailId").val();
+
+            console.log("------------------1111--------->" + userAction);
+
+            item = {}
+            item ["userAction"] = userAction;
+            item ["activityTypeId"] = activityTypeId;
+            item ["activityTypeDetailId"] = activityTypeDetailId;
+
+            jsonObj.push(item);
         });
 
+        console.log("------------------ENDDDDD--------->" + jsonObj);
+    }
+*/
+ var app = angular.module("myApp", []);
+ app.controller("myCtrl", function($scope) {
+     $scope.saveData = function () {
+         console.log($scope.activity);
+     }
+ });
 
-        function ajaxPost() {
+    /* $(document).ready(function () {
 
-            // PREPARE FORM DATA
-            var formData = {
-                activityTypeId: $("#activityTypeId").val(),
-                activityTypeDetailId: $("#activityTypeDetailId").val(),
-                userAction: $("#userAction").val()
-            };
+         // SUBMIT FORM
+         $("#actionActionForm").submit(function (event) {
+             // Prevent the form from submitting via the browser.
+             event.preventDefault();
+             ajaxPost();
+         });
 
-            // DO POST
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: window.location + "/activity_type",
-                //data: JSON.parse(JSON.stringify(jsonArray)),
-                data: JSON.stringify(formData),
-                dataType: 'json',
-                success: function (result) {
-                    if (result.status == "Done") {
-                        $("#postResultDiv").html("<p style='background-color:#7FA7B0; color:white; padding:20px 20px 20px 20px'>" +
-                            "Post Successfully! <br>" + "---> Customer's Info: FirstName = " +
-                            result.data.firstname + " ,LastName = " + result.data.lastname + "</p>");
-                    } else {
-                        $("#postResultDiv").html("<strong>Error</strong>");
-                    }
-                    console.log(result);
-                },
-                error: function (e) {
-                    alert("Error!");
-                    console.log("ERROR: ", e);
-                }
-            });
-
-            // Reset FormData after Posting
-            resetData();
-
-        }
-
-        function resetData() {
-            $("#activityTypeId").val("");
-            $("#activityTypeDetailId").val("");
-            $("#userAction").val("");
-        }
-    })
+         function resetData() {
+             $("#activityTypeId").val("");
+             $("#activityTypeDetailId").val("");
+             $("#userAction").val("");
+         }
+     })*/
 
 
 </script>

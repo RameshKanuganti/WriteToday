@@ -12,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequestMapping(value = "user")
 public class UserController {
 
     @Autowired
@@ -25,16 +27,34 @@ public class UserController {
     @Autowired
     ActivityQuestionRepository activityRepository;
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    @RequestMapping(value = {"/sign_up", "/"}, method = RequestMethod.GET)
     public String registerUser(@ModelAttribute UserDTO userDTO) {
         return "sign_up";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
     public String saveUser(@ModelAttribute UserDTO userDTO) {
 
         TodayResponse todayResponse = userServiceI.register(userDTO);
-        return "sign_up";
+        return "user/sign_up";
+
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String getLoginPage() {
+
+        return "user_login";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String loginUser(Model model, @RequestParam("userName") String userName, @RequestParam("password") String password) {
+
+        TodayResponse todayResponse = userServiceI.loginUser(userName, password);
+
+        model.addAttribute("activityQuestionDTOList", adminServiceI.findAllActivityQuestions());
+        model.addAttribute("activityTypeList", adminServiceI.findAllActivityTypes());
+        model.addAttribute("activityTypeDetailsList", adminServiceI.findAllActivityTypeDetails());
+        return "admin/activity_action_log_by_user";
 
     }
 

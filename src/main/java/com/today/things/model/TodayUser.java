@@ -2,6 +2,7 @@ package com.today.things.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,11 +26,24 @@ public class TodayUser extends BaseEntity {
     @Column(name = "location")
     private String location;
 
-    @OneToMany
-    private List<Role> roles;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Role> roles = new ArrayList<>();
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    public TodayUser() {
+    }
+
+    public TodayUser(TodayUser todayUser) {
+        this.id = todayUser.getId();
+        this.fullName = todayUser.getFullName();
+        this.phoneNumber = todayUser.getPhoneNumber();
+        this.emailId = todayUser.getEmailId();
+        this.location = todayUser.getLocation();
+        this.roles = todayUser.getRoles();
+        this.password = todayUser.getPassword();
+    }
 
     public Long getId() {
         return id;
@@ -85,5 +99,18 @@ public class TodayUser extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "TodayUser{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", emailId='" + emailId + '\'' +
+                ", location='" + location + '\'' +
+                ", roles=" + roles +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

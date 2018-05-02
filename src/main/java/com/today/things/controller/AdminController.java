@@ -13,6 +13,7 @@ import com.today.things.repo.RoleRepository;
 import com.today.things.serviceI.AdminServiceI;
 import com.today.things.util.TodayResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/admin")
 public class AdminController {
 
     @Autowired
@@ -42,11 +44,12 @@ public class AdminController {
 
     @GetMapping("/")
     private String getAdminDashBoard() {
-        TodayResponse todayResponse = adminServiceI.getAdminDashBoard();
+        //TodayResponse todayResponse = adminServiceI.getAdminDashBoard();
         //return new ResponseEntity<TodayResponse>(todayResponse, todayResponse.getStatus());
         return "sign_up";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = {"/role"}, method = RequestMethod.GET)
     public String addRoles(Model model) {
         List<Role> roles = roleRepository.findAll();
